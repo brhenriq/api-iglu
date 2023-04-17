@@ -1,23 +1,23 @@
-use super::Equipments;
+use super::Materials;
 use log::error;
 
-pub async fn list_all() -> Vec<Equipments> {
+pub async fn list_all() -> Vec<Materials> {
     let query = sqlx::query_as!(
-        Equipments,
+        Materials,
         r#"
           SELECT 
             id, 
             description, 
-            power  
-          FROM public.equipments;
+            conductivity  
+          FROM public.materials;
         "#
     );
 
     match query.fetch_all(crate::database::DATABASE.get().await).await {
         Err(_e) => {
-            error!("Error on list equipments {:?}", _e);
+            error!("Error on list materials {:?}", _e);
 
-            [Equipments::default()].to_vec()
+            [Materials::default()].to_vec()
         }
         Ok(response) => response,
     }

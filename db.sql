@@ -113,7 +113,7 @@ CREATE TABLE public.equipments (
 );
 
 -- Inserir Equipamentos
-INSERT INTO public.equipments (id, description, power) VALUES('7478b6f6-07c9-47e5-b656-efb4e88beaa8', 'Computador ', 75.0);
+INSERT INTO public.equipments (id, description, power) VALUES('7478b6f6-07c9-47e5-b656-efb4e88beaa8', 'Computador', 75.0);
 INSERT INTO public.equipments (id, description, power) VALUES('da6adb99-04d4-47e2-adad-19dbb5680681', 'Monitor Pequeno', 55.0);
 INSERT INTO public.equipments (id, description, power) VALUES('88a05460-ce2f-4145-8d7f-f9ffcd6f5f0f', 'Monitor Médio', 70.0);
 INSERT INTO public.equipments (id, description, power) VALUES('6323b1f3-ac02-48fc-b6e0-245ddfbfb309', 'Monitor Grande', 80.0);
@@ -128,3 +128,49 @@ INSERT INTO public.equipments (id, description, power) VALUES('81f8e590-0c0e-487
 INSERT INTO public.equipments (id, description, power) VALUES('9d4effbe-b5c9-416a-8ec3-741f69563550', 'Geladeira', 170.0);
 INSERT INTO public.equipments (id, description, power) VALUES('551d5b62-78fc-4903-a00f-23f7d268963a', 'Aparelho de som', 100.0);
 INSERT INTO public.equipments (id, description, power) VALUES('fc07807c-f5e2-47d5-ab2d-5060f0a0d781', 'TV', 180.0);
+
+-- Criar Tabela materials
+CREATE TABLE public.materials (
+	id varchar NOT NULL,
+	description varchar NOT NULL,
+	conductivity float8 NOT NULL
+);
+
+-- Inserir materiais
+INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Argamassa Comum', 1.15);
+INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Argamassa de Gesso', 0.7);
+INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Argamassa Celular', 0.4);
+INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Cerâmica', 0.9);
+INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Gesso', 0.5);
+INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Fibro-cimento', 0.65);
+INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Concreto Normal', 1.75);
+INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Concreto Cavernoso', 1.4);
+INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Brita', 0.7);
+INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Areia Seca', 0.3);
+INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Areia Saturada', 1.88);
+INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Areia (10% umidade)', 0.93);
+INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Areia (20% umidade)', 1.33);
+INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Lã de vidro', 0.045);
+INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Lã de rocha', 0.045);
+INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Poliestireno expandido moldado', 0.04);
+INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Poliestireno estrudado', 0.035);
+INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Espuma rígida de poliuretano', 0.03);
+INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Borrachas Sintéticas', 0.4);
+INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Acrílicos', 0.2);
+INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Vidro Comum', 1);
+INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Aço', 55);
+INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Alumínio', 230);
+INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Cobre', 380);
+INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Zinco', 112);
+INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Madeiras massa aparente elevada', 0.29);
+INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Carvalho', 0.23);
+INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Freijó', 0.23);
+INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Pinho', 0.23);
+INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Cedro', 0.23);
+INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Pinus', 0.23);
+INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Aglomerado fibras denso (madeira)', 0.2);
+INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Aglomerado fibras leve (madeira)', 0.058);
+INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Aglomerado partículas (madeira)', 0.17);
+INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Placas prensadas (madeira)', 0.12);
+INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Placas extrudadas (madeira)', 0.16);
+INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Compensado (madeira)', 0.15);

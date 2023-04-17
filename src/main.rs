@@ -2,6 +2,7 @@ mod api;
 mod database;
 
 use api::routes::equipments::list_all_equipments;
+use api::routes::materials::list_all_materials;
 use api::routes::solar_factor::list_all_solar_factor;
 
 use actix_web::{error, middleware::Logger, web, App, HttpResponse, HttpServer};
@@ -43,6 +44,7 @@ async fn main() -> std::io::Result<()> {
             )
             .service(list_all_solar_factor)
             .service(list_all_equipments)
+            .service(list_all_materials)
             .wrap(logger)
     })
     .bind(("127.0.0.1", 8080))?
