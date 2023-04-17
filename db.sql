@@ -104,3 +104,27 @@ VALUES('57ed3901-7f54-43b0-8f3f-79a29f58f508', 30.0, 'O', 390);
 INSERT INTO public.solar_factor
 (id, latitude, orientation, value)
 VALUES('f83da18e-9e73-4bff-bd69-ee855cd2b4cf', 30.0, 'SO', 108);
+
+-- Criar Tabela equipments
+CREATE TABLE public.equipments (
+	id varchar NOT NULL,
+	description varchar NOT NULL,
+	power float8 NOT NULL
+);
+
+-- Inserir Equipamentos
+INSERT INTO public.equipments (id, description, power) VALUES('7478b6f6-07c9-47e5-b656-efb4e88beaa8', 'Computador ', 75.0);
+INSERT INTO public.equipments (id, description, power) VALUES('da6adb99-04d4-47e2-adad-19dbb5680681', 'Monitor Pequeno', 55.0);
+INSERT INTO public.equipments (id, description, power) VALUES('88a05460-ce2f-4145-8d7f-f9ffcd6f5f0f', 'Monitor Médio', 70.0);
+INSERT INTO public.equipments (id, description, power) VALUES('6323b1f3-ac02-48fc-b6e0-245ddfbfb309', 'Monitor Grande', 80.0);
+INSERT INTO public.equipments (id, description, power) VALUES('fdc36be3-2bef-4398-8212-31a1bd69b0a5', 'Impressora de mesa,pequena', 215.0);
+INSERT INTO public.equipments (id, description, power) VALUES('f466145f-00a4-49d8-a039-8eb1aaca641c', 'Impressora de escritório,pequena', 320.0);
+INSERT INTO public.equipments (id, description, power) VALUES('558e0db2-6605-47ef-bbac-05faf7448bee', 'Impressora de escritório,grande', 550.0);
+INSERT INTO public.equipments (id, description, power) VALUES('f8ab4950-858c-48cb-9d0d-12a6501a8441', 'Copiadoras Grande', 1100.0);
+INSERT INTO public.equipments (id, description, power) VALUES('732e5ff8-0a0e-4a6c-bacb-889766b214e9', 'Maquina de Café', 1660.0);
+INSERT INTO public.equipments (id, description, power) VALUES('f564c05b-7ae9-4164-8d32-6cfd58ef5493', 'Bebedouro', 1400.0);
+INSERT INTO public.equipments (id, description, power) VALUES('3c6878b5-a1ba-4863-bc92-faf8d0c2f6d2', 'Micro-ondas', 2600.0);
+INSERT INTO public.equipments (id, description, power) VALUES('81f8e590-0c0e-4875-bee0-c8ee78a5bd6b', 'Torradeira', 5300.0);
+INSERT INTO public.equipments (id, description, power) VALUES('9d4effbe-b5c9-416a-8ec3-741f69563550', 'Geladeira', 170.0);
+INSERT INTO public.equipments (id, description, power) VALUES('551d5b62-78fc-4903-a00f-23f7d268963a', 'Aparelho de som', 100.0);
+INSERT INTO public.equipments (id, description, power) VALUES('fc07807c-f5e2-47d5-ab2d-5060f0a0d781', 'TV', 180.0);

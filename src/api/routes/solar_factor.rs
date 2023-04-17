@@ -12,11 +12,11 @@ use actix_web::{
 // use log::info;
 // use derive_more::Display;
 
-use crate::api::modules::solar_factor::{use_case::list_solar_factor, SolarFactor};
+use crate::api::modules::solar_factor::{use_case::list_all, SolarFactor};
 
 #[get("v1/solar/factor")]
-pub async fn get_task() -> Json<Vec<SolarFactor>> {
-    let solar = list_solar_factor().await;
+pub async fn list_all_solar_factor() -> Json<Vec<SolarFactor>> {
+    let solar = list_all().await;
 
     return Json(solar);
 }

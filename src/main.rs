@@ -1,7 +1,8 @@
 mod api;
 mod database;
 
-use api::routes::solar_factor::get_task;
+use api::routes::equipments::list_all_equipments;
+use api::routes::solar_factor::list_all_solar_factor;
 
 use actix_web::{error, middleware::Logger, web, App, HttpResponse, HttpServer};
 use serde::{Deserialize, Serialize};
@@ -40,7 +41,8 @@ async fn main() -> std::io::Result<()> {
                         .into()
                     }),
             )
-            .service(get_task)
+            .service(list_all_solar_factor)
+            .service(list_all_equipments)
             .wrap(logger)
     })
     .bind(("127.0.0.1", 8080))?

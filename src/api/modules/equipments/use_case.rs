@@ -1,16 +1,15 @@
-use super::SolarFactor;
+use super::Equipments;
 use log::error;
 
-pub async fn list_all() -> Vec<SolarFactor> {
+pub async fn list_all() -> Vec<Equipments> {
     let query = sqlx::query_as!(
-        SolarFactor,
+        Equipments,
         r#"
           SELECT 
             id, 
-            latitude, 
-            orientation, 
-            value 
-          FROM public.solar_factor;
+            description, 
+            power  
+          FROM public.equipments;
         "#
     );
 
@@ -18,7 +17,7 @@ pub async fn list_all() -> Vec<SolarFactor> {
         Err(_e) => {
             error!("Error on list solar_factor {:?}", _e);
 
-            [SolarFactor::default()].to_vec()
+            [Equipments::default()].to_vec()
         }
         Ok(response) => response,
     }
