@@ -1,6 +1,7 @@
 mod api;
 mod database;
 
+use api::routes::blocks::list_all_blocks;
 use api::routes::equipments::list_all_equipments;
 use api::routes::materials::list_all_materials;
 use api::routes::solar_factor::list_all_solar_factor;
@@ -45,6 +46,7 @@ async fn main() -> std::io::Result<()> {
             .service(list_all_solar_factor)
             .service(list_all_equipments)
             .service(list_all_materials)
+            .service(list_all_blocks)
             .wrap(logger)
     })
     .bind(("127.0.0.1", 8080))?

@@ -1,4 +1,4 @@
--- Criar Tabela solar_factor
+--! Criar Tabela solar_factor
 CREATE TABLE public.solar_factor (
 	id varchar NOT NULL,
 	latitude float8 NOT NULL,
@@ -7,7 +7,7 @@ CREATE TABLE public.solar_factor (
 	CONSTRAINT solar_factor_pk PRIMARY KEY (id)
 );
 
--- Inserir Fator Solar
+--! Inserir Fator Solar
 INSERT INTO public.solar_factor
 (id, latitude, orientation, value)
 VALUES('740d99dc-d602-45c7-be16-45a706a15a9b', 0.0, 'S', 35);
@@ -105,14 +105,14 @@ INSERT INTO public.solar_factor
 (id, latitude, orientation, value)
 VALUES('f83da18e-9e73-4bff-bd69-ee855cd2b4cf', 30.0, 'SO', 108);
 
--- Criar Tabela equipments
+--? Criar Tabela equipments
 CREATE TABLE public.equipments (
 	id varchar NOT NULL,
 	description varchar NOT NULL,
 	power float8 NOT NULL
 );
 
--- Inserir Equipamentos
+--? Inserir Equipamentos
 INSERT INTO public.equipments (id, description, power) VALUES('7478b6f6-07c9-47e5-b656-efb4e88beaa8', 'Computador', 75.0);
 INSERT INTO public.equipments (id, description, power) VALUES('da6adb99-04d4-47e2-adad-19dbb5680681', 'Monitor Pequeno', 55.0);
 INSERT INTO public.equipments (id, description, power) VALUES('88a05460-ce2f-4145-8d7f-f9ffcd6f5f0f', 'Monitor Médio', 70.0);
@@ -129,14 +129,14 @@ INSERT INTO public.equipments (id, description, power) VALUES('9d4effbe-b5c9-416
 INSERT INTO public.equipments (id, description, power) VALUES('551d5b62-78fc-4903-a00f-23f7d268963a', 'Aparelho de som', 100.0);
 INSERT INTO public.equipments (id, description, power) VALUES('fc07807c-f5e2-47d5-ab2d-5060f0a0d781', 'TV', 180.0);
 
--- Criar Tabela materials
+--* Criar Tabela materials
 CREATE TABLE public.materials (
 	id varchar NOT NULL,
 	description varchar NOT NULL,
 	conductivity float8 NOT NULL
 );
 
--- Inserir materiais
+--* Inserir materiais
 INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Argamassa Comum', 1.15);
 INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Argamassa de Gesso', 0.7);
 INSERT INTO public.materials (id, description, conductivity) VALUES (gen_random_uuid(), 'Argamassa Celular', 0.4);
