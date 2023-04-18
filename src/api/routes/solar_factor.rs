@@ -1,10 +1,12 @@
 use actix_web::{get, web::Json};
 
-use crate::api::modules::solar_factor::{use_case::list_all, SolarFactor};
+use crate::api::modules::solar_factor::list_all::use_case::{
+    list_all_solar_factor_request, SolarFactorResponse,
+};
 
 #[get("v1/solar-factor")]
-pub async fn list_all_solar_factor() -> Json<Vec<SolarFactor>> {
-    let solar = list_all().await;
+pub async fn list_all_solar_factor() -> Json<SolarFactorResponse> {
+    let solar = list_all_solar_factor_request().await;
 
     return Json(solar);
 }

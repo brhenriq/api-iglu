@@ -1,5 +1,6 @@
-use super::SolarFactor;
 use log::error;
+
+use crate::api::modules::solar_factor::list_all::SolarFactor;
 
 pub async fn list_all() -> Vec<SolarFactor> {
     let query = sqlx::query_as!(
