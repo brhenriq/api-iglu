@@ -1,5 +1,6 @@
-use super::Equipments;
 use log::error;
+
+use crate::api::modules::equipments::list_all::Equipments;
 
 pub async fn list_all() -> Vec<Equipments> {
     let query = sqlx::query_as!(
@@ -9,7 +10,8 @@ pub async fn list_all() -> Vec<Equipments> {
             id, 
             description, 
             power  
-          FROM public.equipments;
+          FROM public.equipments
+          ORDER BY description ASC;
         "#
     );
 
