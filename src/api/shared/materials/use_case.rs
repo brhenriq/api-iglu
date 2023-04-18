@@ -1,5 +1,6 @@
-use super::Materials;
 use log::error;
+
+use crate::api::modules::materials::list_all::Materials;
 
 pub async fn list_all() -> Vec<Materials> {
     let query = sqlx::query_as!(
