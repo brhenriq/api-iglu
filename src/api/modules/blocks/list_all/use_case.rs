@@ -1,13 +1,12 @@
-use crate::api::shared::blocks::use_case::list_all;
+use crate::api::shared::blocks::{use_case::list_all, BlockWithMaterialFormat};
 
-use super::Block;
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize)]
 pub struct BlocksResponse {
     pub result: String,
     pub code: i32,
-    pub data: Vec<Block>,
+    pub data: Vec<BlockWithMaterialFormat>,
 }
 
 pub async fn list_all_blocks_request() -> BlocksResponse {

@@ -1,26 +1,46 @@
 use log::error;
 
-use crate::api::modules::blocks::list_all::Block;
+use crate::api::shared::blocks::BlockWithMaterialDb;
 
-pub async fn list_all() -> Vec<Block> {
+use super::{BlockWithMaterialFormat, Material};
+
+pub async fn list_all() -> Vec<BlockWithMaterialFormat> {
     let query = sqlx::query_as!(
-        Block,
+        BlockWithMaterialDb,
         r#"
           SELECT 
-            id,
-            material_id,
-            height,
-            width,
-            length 
-          FROM public.blocks;
+            b.id,
+            b.height,
+            b.width,
+            b.length,
+            b.material_id,
+            m.description,
+            m.conductivity
+          FROM public.blocks b
+          INNER JOIN public.materials m ON m.id = b.material_id
+          ORDER BY m.description ASC;
         "#
     );
 
-    match query.fetch_all(crate::database::DATABASE.get().await).await {
+    match query
+        .map(|row| BlockWithMaterialFormat {
+            id: row.id,
+            height: row.height,
+            width: row.width,
+            length: row.length,
+            material: Material {
+                id: row.material_id,
+                description: row.description,
+                conductivity: row.conductivity,
+            },
+        })
+        .fetch_all(crate::database::DATABASE.get().await)
+        .await
+    {
         Err(_e) => {
             error!("Error on list blocks {:?}", _e);
 
-            [Block::default()].to_vec()
+            [BlockWithMaterialFormat::default()].to_vec()
         }
         Ok(response) => response,
     }
