@@ -1,5 +1,6 @@
-use super::Block;
 use log::error;
+
+use crate::api::modules::blocks::list_all::Block;
 
 pub async fn list_all() -> Vec<Block> {
     let query = sqlx::query_as!(
