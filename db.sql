@@ -34,6 +34,22 @@ CREATE TABLE blocks (
 
 ALTER TABLE public.blocks ADD CONSTRAINT blocks_fk FOREIGN KEY (material_id) REFERENCES materials(id);
 
+CREATE TABLE public.roofs_types (
+	id int4 NOT NULL,
+	description varchar NOT NULL,
+	CONSTRAINT roofs_types_pk PRIMARY KEY (id)
+);
+
+CREATE TABLE public.roofs (
+	id varchar NOT NULL,
+	material_id varchar NOT NULL,
+	thickness float8 NOT NULL,
+	type_id int4 NOT NULL,
+	CONSTRAINT roofs_pk PRIMARY KEY (id),
+	CONSTRAINT roofs_fk FOREIGN KEY (material_id) REFERENCES public.materials(id),
+	CONSTRAINT roofs_types_fk FOREIGN KEY (type_id) REFERENCES public.roofs_types(id)
+);
+
 -- ! Insert data
 INSERT INTO solar_factor (id, latitude, orientation, value) VALUES('740d99dc-d602-45c7-be16-45a706a15a9b', 0.0, 'S', 35);
 INSERT INTO solar_factor (id, latitude, orientation, value) VALUES('1c00a699-6ac2-4b31-bb1d-97400ad410bf', 0.0, 'SE', 35);
@@ -141,3 +157,6 @@ INSERT INTO blocks (id, material_id, height, width, length) VALUES('b7e5c616-6ec
 INSERT INTO blocks (id, material_id, height, width, length) VALUES('457703cb-3bcb-448a-b42c-a1539fb3d015', '23c2b86a-d048-40ed-bbe2-31e107581814', 0.19, 0.14, 0.39);
 INSERT INTO blocks (id, material_id, height, width, length) VALUES('54d7bbee-488a-4da0-9021-56139b2c79df', '23c2b86a-d048-40ed-bbe2-31e107581814', 0.19, 0.19, 0.39);
 INSERT INTO blocks (id, material_id, height, width, length) VALUES('9059db52-7892-4bfc-9cae-bc4e3e508e5a', '23c2b86a-d048-40ed-bbe2-31e107581814', 0.24, 0.24, 0.39);
+
+INSERT INTO roofs_types (id, description) VALUES(1, 'lining');
+INSERT INTO roofs_types (id, description) VALUES(2, 'tile');
