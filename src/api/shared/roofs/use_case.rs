@@ -4,30 +4,31 @@ use crate::api::shared::{roofs::RoofsFormat, roofs::RoofsWithMaterialDb};
 
 use super::Material;
 
-pub async fn list_all_tiles() -> Vec<RoofsFormat> {
+pub async fn list_all(roof_type: Option<i32>) -> Vec<RoofsFormat> {
     let query = sqlx::query_as!(
         RoofsWithMaterialDb,
         r#"
           SELECT 
-            b.id,
-            b.height,
-            b.width,
-            b.length,
-            b.material_id,
+            r.id,
+            r.thickness,
+            r.material_id,
+            rt.description as roof_type,
             m.description,
             m.conductivity
-          FROM public.blocks b
-          INNER JOIN public.materials m ON m.id = b.material_id
+          FROM public.roofs r
+          INNER JOIN public.materials m ON m.id = r.material_id
+          INNER JOIN public.roofs_types rt ON rt.id = r.type_id
+          WHERE r.type_id = $1
           ORDER BY m.description ASC;
-        "#
+        "#,
+        roof_type
     );
 
     match query
         .map(|row| RoofsFormat {
             id: row.id,
-            height: row.height,
-            width: row.width,
-            length: row.length,
+            thickness: row.thickness,
+            roof_type: row.roof_type,
             material: Material {
                 id: row.material_id,
                 description: row.description,
@@ -38,49 +39,7 @@ pub async fn list_all_tiles() -> Vec<RoofsFormat> {
         .await
     {
         Err(_e) => {
-            error!("Error on list blocks {:?}", _e);
-
-            [RoofsFormat::default()].to_vec()
-        }
-        Ok(response) => response,
-    }
-}
-
-pub async fn list_all_linings() -> Vec<RoofsFormat> {
-    let query = sqlx::query_as!(
-        RoofsWithMaterialDb,
-        r#"
-          SELECT 
-            b.id,
-            b.height,
-            b.width,
-            b.length,
-            b.material_id,
-            m.description,
-            m.conductivity
-          FROM public.blocks b
-          INNER JOIN public.materials m ON m.id = b.material_id
-          ORDER BY m.description ASC;
-        "#
-    );
-
-    match query
-        .map(|row| RoofsFormat {
-            id: row.id,
-            height: row.height,
-            width: row.width,
-            length: row.length,
-            material: Material {
-                id: row.material_id,
-                description: row.description,
-                conductivity: row.conductivity,
-            },
-        })
-        .fetch_all(crate::database::DATABASE.get().await)
-        .await
-    {
-        Err(_e) => {
-            error!("Error on list blocks {:?}", _e);
+            error!("Error on list roofs {:?}", _e);
 
             [RoofsFormat::default()].to_vec()
         }

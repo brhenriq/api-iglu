@@ -160,3 +160,16 @@ INSERT INTO blocks (id, material_id, height, width, length) VALUES('9059db52-789
 
 INSERT INTO roofs_types (id, description) VALUES(1, 'lining');
 INSERT INTO roofs_types (id, description) VALUES(2, 'tile');
+
+INSERT INTO roofs (id, material_id, thickness, type_id) VALUES('fffa6c80-a094-4a0c-a536-aab6653080c4', '24153d27-bf9c-421e-9f96-e1d12f35584e', 0.2, 2);
+INSERT INTO roofs (id, material_id, thickness, type_id) VALUES('9de360e3-ee54-421d-8123-60ac64b2312e', '67946aee-f8e2-4ee5-96b3-3c086c9cf414', 0.4, 2);
+INSERT INTO roofs (id, material_id, thickness, type_id) VALUES('7b8a16c5-6ac7-4aec-b110-a24cffbed4f4', '67946aee-f8e2-4ee5-96b3-3c086c9cf414', 0.5, 2);
+INSERT INTO roofs (id, material_id, thickness, type_id) VALUES('3f94dce6-1bea-4884-8fe1-b8dbc7f5072c', '67946aee-f8e2-4ee5-96b3-3c086c9cf414', 0.6, 2);
+INSERT INTO roofs (id, material_id, thickness, type_id) VALUES('c063ef01-f431-4c88-964e-ddaea44d28bb', '7c66f6c5-1abc-4cd8-a4d4-48ff6bb50b55', 0.02, 1);
+INSERT INTO roofs (id, material_id, thickness, type_id) VALUES('8c373a69-c7d8-43ec-aebb-09160feeffe4', 'cd648fdf-3e53-4c07-aec1-87effae785be', 0.05, 1);
+INSERT INTO roofs (id, material_id, thickness, type_id) VALUES('167913f3-2f45-43ee-8f2a-a3935779d3e3', 'cd648fdf-3e53-4c07-aec1-87effae785be', 0.025, 1);
+INSERT INTO roofs (id, material_id, thickness, type_id) VALUES('b0b056b5-b95c-4a5f-b72b-5838574a3f23', '2ef82717-80e2-4cc2-ad01-458a04beb6f2', 0.02, 1);
+INSERT INTO roofs (id, material_id, thickness, type_id) VALUES('e94db61f-e23e-4f33-bd8e-4516e3f4013f', '23c2b86a-d048-40ed-bbe2-31e107581814', 0.2, 1);
+INSERT INTO roofs (id, material_id, thickness, type_id) VALUES('9f306863-be67-40ab-9224-a7244576a8cc', '23c2b86a-d048-40ed-bbe2-31e107581814', 0.1, 1);
+INSERT INTO roofs (id, material_id, thickness, type_id) VALUES('08599486-7f1f-438a-923c-e12699e381e2', '23c2b86a-d048-40ed-bbe2-31e107581814', 0.15, 1);
+INSERT INTO roofs (id, material_id, thickness, type_id) VALUES('d76a4e5e-7e0a-4c3b-9bb7-416929f9a067', '23c2b86a-d048-40ed-bbe2-31e107581814', 0.3, 1);
