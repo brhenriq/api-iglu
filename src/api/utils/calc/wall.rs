@@ -1,31 +1,31 @@
 pub struct BlockProps {
-    width: f64,
-    height: f64,
-    length: f64,
-    conductivity: f64,
+    pub width: f64,
+    pub height: f64,
+    pub length: f64,
+    pub conductivity: f64,
 }
 
 pub struct PlasterProps {
-    internal_thickness: f64,
-    external_thickness: f64,
-    conductivity: f64,
+    pub internal_thickness: f64,
+    pub external_thickness: f64,
+    pub conductivity: f64,
 }
 
-pub struct TemperatureProps {
-    internal_temperature: f64,
-    external_temperature: f64,
+pub struct TemperaturePropsWall {
+    pub internal_temperature: f64,
+    pub external_temperature: f64,
 }
 
 pub struct SettlementProps {
-    conductivity: f64,
+    pub conductivity: f64,
 }
 
 pub struct WallCalcProps {
-    block: BlockProps,
-    plaster: PlasterProps,
-    settlement: SettlementProps,
-    temperature: TemperatureProps,
-    wall_area: f64,
+    pub block: BlockProps,
+    pub plaster: PlasterProps,
+    pub settlement: SettlementProps,
+    pub temperature: TemperaturePropsWall,
+    pub wall_area: f64,
 }
 
 pub fn wall(props: WallCalcProps) -> f64 {

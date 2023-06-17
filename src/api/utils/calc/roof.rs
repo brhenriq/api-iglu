@@ -1,22 +1,22 @@
 pub struct LiningProps {
-    thickness: f64,
-    conductivity: f64,
+    pub thickness: f64,
+    pub conductivity: f64,
 }
 pub struct TilesProps {
-    thickness: f64,
-    conductivity: f64,
+    pub thickness: f64,
+    pub conductivity: f64,
 }
 
-pub struct TemperatureProps {
-    internal_temperature: f64,
-    external_temperature: f64,
+pub struct TemperaturePropsRoof {
+    pub internal_temperature: f64,
+    pub external_temperature: f64,
 }
 
 pub struct RoofCalcProps {
-    temperature: TemperatureProps,
-    floor_area: f64,
-    lining: LiningProps,
-    tile: TilesProps,
+    pub temperature: TemperaturePropsRoof,
+    pub floor_area: f64,
+    pub lining: LiningProps,
+    pub tile: TilesProps,
 }
 
 pub fn roof(props: RoofCalcProps) -> f64 {

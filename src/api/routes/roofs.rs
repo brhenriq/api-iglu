@@ -11,7 +11,7 @@ pub struct Info {
     roof_type: Option<i32>,
 }
 
-#[get("v1/roofs")]
+#[get("roofs")]
 pub async fn list_all_roofs(info: Query<Info>) -> Json<RoofsResponse> {
     let equipments = list_all_roofs_request(info.roof_type).await;
 

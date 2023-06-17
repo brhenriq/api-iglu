@@ -1,12 +1,15 @@
 mod api;
 mod database;
 
-use api::routes::equipments::list_all_equipments;
-use api::routes::materials::list_all_materials;
-use api::routes::solar_factor::list_all_solar_factor;
-use api::routes::{blocks::list_all_blocks, roofs::list_all_roofs};
+// use api::routes::equipments::list_all_equipments;
+// use api::routes::materials::list_all_materials;
+// use api::routes::request::request_calc;
+// use api::routes::solar_factor::list_all_solar_factor;
+// use api::routes::{blocks::list_all_blocks, roofs::list_all_roofs};
 
+use crate::config::config;
 use actix_web::{error, middleware::Logger, web, App, HttpResponse, HttpServer};
+use api::routes::config;
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -43,11 +46,13 @@ async fn main() -> std::io::Result<()> {
                         .into()
                     }),
             )
-            .service(list_all_solar_factor)
-            .service(list_all_equipments)
-            .service(list_all_materials)
-            .service(list_all_blocks)
-            .service(list_all_roofs)
+            // .service(list_all_solar_factor)
+            // .service(list_all_equipments)
+            // .service(list_all_materials)
+            // .service(list_all_blocks)
+            // .service(list_all_roofs)
+            // .service(request_calc)
+            .configure(config)
             .wrap(logger)
     })
     .bind(("127.0.0.1", 8080))?
