@@ -9,7 +9,6 @@ edition = "2021"
 actix-web = "^4"
 async_once = "0.2.6"
 derive_more = "^0.99"
-# diesel = { version = "<version>", features = ["postgres"] }
 dotenv = "0.15.0"
 env_logger = "0.8"
 lazy_static = "1.4.0"

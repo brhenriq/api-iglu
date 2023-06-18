@@ -9,7 +9,7 @@ mod database;
 
 use crate::config::config;
 use actix_web::{error, middleware::Logger, web, App, HttpResponse, HttpServer};
-use api::routes::config;
+use api::routes::{config, healthcheck::health_check_route};
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -52,6 +52,7 @@ async fn main() -> std::io::Result<()> {
             // .service(list_all_blocks)
             // .service(list_all_roofs)
             // .service(request_calc)
+            .service(health_check_route)
             .configure(config)
             .wrap(logger)
     })
