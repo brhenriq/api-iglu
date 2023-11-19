@@ -1,4 +1,4 @@
-pub fn peoples(activity: String, quantity: i64) -> f64 {
+pub fn peoples_calc(activity: String, quantity: i64) -> f64 {
     let power = match activity.as_str() {
         "low" => 80.0,
         "medium" => 150.0,

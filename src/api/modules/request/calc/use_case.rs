@@ -5,10 +5,10 @@ use crate::api::{
     modules::request::{CalcRequest, CalcResponse},
     shared::equipments::use_case::list_by_id,
     utils::calc::{
-        equipment::equipment,
+        equipment::equipments_calc,
         insolation::insolation,
-        lighting::lighting,
-        peoples::peoples,
+        lighting::lighting_calc,
+        peoples::peoples_calc,
         roof::{roof, LiningProps, RoofCalcProps, TemperaturePropsRoof, TilesProps},
         wall::{
             wall, BlockProps, PlasterProps, SettlementProps, TemperaturePropsWall, WallCalcProps,
@@ -41,22 +41,28 @@ pub struct Request {
 }
 
 pub async fn calc_request(p: Request) -> CalcResponse {
+    let Request {
+        equipments,
+        lighting,
+        peoples,
+    } = p;
+
     let mut p_calc = 0.00;
     let mut e_calc = 0.00;
     let mut l_calc = 0.00;
 
-    match p.peoples {
+    match peoples {
         None => {
             warn!("Peoples not sended");
         }
         Some(p) => {
             for people in p {
-                p_calc += peoples(people.activity.clone(), people.quantity.clone());
+                p_calc += peoples_calc(people.activity.clone(), people.quantity.clone());
             }
         }
     }
 
-    match p.equipments {
+    match equipments {
         None => {
             warn!("Equipments not sended");
         }
@@ -64,17 +70,17 @@ pub async fn calc_request(p: Request) -> CalcResponse {
             for e in equipments {
                 let find_equipment = list_by_id(&e.id).await;
 
-                e_calc += equipment(find_equipment[0].power, e.quantity);
+                e_calc += equipments_calc(find_equipment[0].power, e.quantity);
             }
         }
     }
 
-    match p.lighting {
+    match lighting {
         None => {
             warn!("Lighting not sended");
         }
         Some(l) => {
-            l_calc += lighting(l.area);
+            l_calc += lighting_calc(l.area);
         }
     }
 
@@ -99,7 +105,7 @@ pub async fn calc_request(p: Request) -> CalcResponse {
         },
         wall_area: 1.0,
     });
-    
+
     let roof = roof(RoofCalcProps {
         temperature: TemperaturePropsRoof {
             internal_temperature: 1.0,
