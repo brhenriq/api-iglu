@@ -29,14 +29,21 @@ pub struct EquipmentsRequest {
 }
 
 #[derive(Deserialize, Serialize)]
+pub struct LightingRequest {
+    area: f64,
+}
+
+#[derive(Deserialize, Serialize)]
 pub struct Request {
     peoples: Option<Vec<PeoplesRequest>>,
     equipments: Option<Vec<EquipmentsRequest>>,
+    lighting: Option<LightingRequest>,
 }
 
 pub async fn calc_request(p: Request) -> CalcResponse {
     let mut p_calc = 0.00;
     let mut e_calc = 0.00;
+    let mut l_calc = 0.00;
 
     match p.peoples {
         None => {
@@ -62,8 +69,17 @@ pub async fn calc_request(p: Request) -> CalcResponse {
         }
     }
 
-    let lighting = lighting(1.0);
+    match p.lighting {
+        None => {
+            warn!("Lighting not sended");
+        }
+        Some(l) => {
+            l_calc += lighting(l.area);
+        }
+    }
+
     let insolation = insolation(1.0, 1.0);
+
     let wall = wall(WallCalcProps {
         block: BlockProps {
             width: 1.0,
@@ -83,6 +99,7 @@ pub async fn calc_request(p: Request) -> CalcResponse {
         },
         wall_area: 1.0,
     });
+    
     let roof = roof(RoofCalcProps {
         temperature: TemperaturePropsRoof {
             internal_temperature: 1.0,
@@ -105,11 +122,11 @@ pub async fn calc_request(p: Request) -> CalcResponse {
         data: CalcRequest {
             peoples: p_calc,
             equipments: e_calc,
-            lighting,
+            lighting: l_calc,
             insolation,
             wall,
             roof,
-            total: p_calc + e_calc + lighting + insolation + wall + roof,
+            total: p_calc + e_calc + l_calc + insolation + wall + roof,
         },
     }
 }
