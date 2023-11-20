@@ -56,7 +56,7 @@ async fn main() -> std::io::Result<()> {
             .configure(config)
             .wrap(logger)
     })
-    .bind(("127.0.0.1", 10000))?
+    .bind(("0.0.0.0", 10000))?
     .run()
     .await
 }
