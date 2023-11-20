@@ -69,7 +69,7 @@ pub struct Request {
     peoples: Option<Vec<PeoplesRequest>>,
     equipments: Option<Vec<EquipmentsRequest>>,
     lighting: Option<LightingRequest>,
-    wall: Option<WallRequest>,
+    wall: Option<Vec<WallRequest>>,
     temperature: Option<TemperatureRequest>,
 }
 
@@ -132,34 +132,36 @@ pub async fn calc_request(props: Request) -> CalcResponse {
             warn!("Wall not sended");
         }
         Some(w) => {
-            let block = list_block_by_id(&w.block_id).await;
-            let plaster = list_material_by_id(&w.plaster.material_id).await;
-            let settlement = list_material_by_id(&w.settlement.material_id).await;
+            for a in w {
+                let block = list_block_by_id(&a.block_id).await;
+                let plaster = list_material_by_id(&a.plaster.material_id).await;
+                let settlement = list_material_by_id(&a.settlement.material_id).await;
 
-            w_calc = wall_calc(WallCalcProps {
-                block: BlockProps {
-                    width: block.width,
-                    height: block.height,
-                    length: block.length,
-                    conductivity: block.material.conductivity,
-                },
-                plaster: PlasterProps {
-                    internal_thickness: w.plaster.internal_thickness,
-                    external_thickness: w.plaster.external_thickness,
-                    conductivity: plaster.conductivity,
-                },
-                settlement: SettlementProps {
-                    conductivity: match w.settlement.conductivity {
-                        None => settlement.conductivity,
-                        Some(conductivity) => conductivity,
+                w_calc += wall_calc(WallCalcProps {
+                    block: BlockProps {
+                        width: block.width,
+                        height: block.height,
+                        length: block.length,
+                        conductivity: block.material.conductivity,
                     },
-                },
-                temperature: TemperaturePropsWall {
-                    internal_temperature,
-                    external_temperature,
-                },
-                wall_area: w.area,
-            });
+                    plaster: PlasterProps {
+                        internal_thickness: a.plaster.internal_thickness,
+                        external_thickness: a.plaster.external_thickness,
+                        conductivity: plaster.conductivity,
+                    },
+                    settlement: SettlementProps {
+                        conductivity: match a.settlement.conductivity {
+                            None => settlement.conductivity,
+                            Some(conductivity) => conductivity,
+                        },
+                    },
+                    temperature: TemperaturePropsWall {
+                        internal_temperature,
+                        external_temperature,
+                    },
+                    wall_area: a.area,
+                });
+            }
         }
     }
 
