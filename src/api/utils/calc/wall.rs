@@ -28,7 +28,7 @@ pub struct WallCalcProps {
     pub wall_area: f64,
 }
 
-pub fn wall(props: WallCalcProps) -> f64 {
+pub fn wall_calc(props: WallCalcProps) -> f64 {
     let block = props.block;
     let plaster = props.plaster;
     let settlement = props.settlement;

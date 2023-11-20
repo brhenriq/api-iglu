@@ -1,6 +1,8 @@
 mod api;
 mod database;
 
+use std::env;
+
 use api::routes::equipments::list_all_equipments;
 use api::routes::materials::list_all_materials;
 use api::routes::request::request_calc;
@@ -22,9 +24,12 @@ pub struct Info {
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     dotenv::dotenv().ok();
-    std::env::set_var("RUST_LOG", "debug");
-    std::env::set_var("RUST_BACKTRACE", "1");
+    env::set_var("RUST_LOG", "debug");
+    env::set_var("RUST_BACKTRACE", "1");
     env_logger::init();
+
+    let host = env::var("HOST").expect("Error on load HOST env");
+    let port = env::var("PORT").expect("Error on load PORT env");
 
     HttpServer::new(move || {
         let logger = Logger::default();
@@ -56,7 +61,7 @@ async fn main() -> std::io::Result<()> {
             .configure(config)
             .wrap(logger)
     })
-    .bind(("0.0.0.0", 10000))?
+    .bind((host, port.parse::<u16>().unwrap()))?
     .run()
     .await
 }

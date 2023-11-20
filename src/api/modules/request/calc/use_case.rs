@@ -3,7 +3,10 @@ use serde::{Deserialize, Serialize};
 
 use crate::api::{
     modules::request::{CalcRequest, CalcResponse},
-    shared::equipments::use_case::list_by_id,
+    shared::{
+        blocks::use_case::list_block_by_id, equipments::use_case::list_by_id,
+        materials::use_case::list_material_by_id,
+    },
     utils::calc::{
         equipment::equipments_calc,
         insolation::insolation,
@@ -11,7 +14,8 @@ use crate::api::{
         peoples::peoples_calc,
         roof::{roof, LiningProps, RoofCalcProps, TemperaturePropsRoof, TilesProps},
         wall::{
-            wall, BlockProps, PlasterProps, SettlementProps, TemperaturePropsWall, WallCalcProps,
+            wall_calc, BlockProps, PlasterProps, SettlementProps, TemperaturePropsWall,
+            WallCalcProps,
         },
     },
 };
@@ -29,8 +33,35 @@ pub struct EquipmentsRequest {
 }
 
 #[derive(Deserialize, Serialize)]
+pub struct WallRequest {
+    block_id: String,
+    plaster: PlasterRequest,
+    settlement: SettlementRequest,
+    area: f64,
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct PlasterRequest {
+    material_id: String,
+    internal_thickness: f64,
+    external_thickness: f64,
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct SettlementRequest {
+    material_id: String,
+    conductivity: Option<f64>,
+}
+
+#[derive(Deserialize, Serialize)]
 pub struct LightingRequest {
     area: f64,
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct TemperatureRequest {
+    internal: f64,
+    external: f64,
 }
 
 #[derive(Deserialize, Serialize)]
@@ -38,18 +69,28 @@ pub struct Request {
     peoples: Option<Vec<PeoplesRequest>>,
     equipments: Option<Vec<EquipmentsRequest>>,
     lighting: Option<LightingRequest>,
+    wall: Option<WallRequest>,
+    temperature: Option<TemperatureRequest>,
 }
 
-pub async fn calc_request(p: Request) -> CalcResponse {
+pub async fn calc_request(props: Request) -> CalcResponse {
     let Request {
         equipments,
         lighting,
         peoples,
-    } = p;
+        wall,
+        temperature,
+    } = props;
+
+    let (internal_temperature, external_temperature) = match temperature {
+        None => (0.00, 0.00),
+        Some(t) => (t.internal, t.external),
+    };
 
     let mut p_calc = 0.00;
     let mut e_calc = 0.00;
     let mut l_calc = 0.00;
+    let mut w_calc = 0.00;
 
     match peoples {
         None => {
@@ -70,7 +111,7 @@ pub async fn calc_request(p: Request) -> CalcResponse {
             for e in equipments {
                 let find_equipment = list_by_id(&e.id).await;
 
-                e_calc += equipments_calc(find_equipment[0].power, e.quantity);
+                e_calc += equipments_calc(find_equipment.power, e.quantity);
             }
         }
     }
@@ -86,25 +127,41 @@ pub async fn calc_request(p: Request) -> CalcResponse {
 
     let insolation = insolation(1.0, 1.0);
 
-    let wall = wall(WallCalcProps {
-        block: BlockProps {
-            width: 1.0,
-            height: 1.0,
-            length: 1.0,
-            conductivity: 1.0,
-        },
-        plaster: PlasterProps {
-            internal_thickness: 1.0,
-            external_thickness: 1.0,
-            conductivity: 1.0,
-        },
-        settlement: SettlementProps { conductivity: 1.0 },
-        temperature: TemperaturePropsWall {
-            internal_temperature: 1.0,
-            external_temperature: 1.0,
-        },
-        wall_area: 1.0,
-    });
+    match wall {
+        None => {
+            warn!("Wall not sended");
+        }
+        Some(w) => {
+            let block = list_block_by_id(&w.block_id).await;
+            let plaster = list_material_by_id(&w.plaster.material_id).await;
+            let settlement = list_material_by_id(&w.settlement.material_id).await;
+
+            w_calc = wall_calc(WallCalcProps {
+                block: BlockProps {
+                    width: block.width,
+                    height: block.height,
+                    length: block.length,
+                    conductivity: block.material.conductivity,
+                },
+                plaster: PlasterProps {
+                    internal_thickness: w.plaster.internal_thickness,
+                    external_thickness: w.plaster.external_thickness,
+                    conductivity: plaster.conductivity,
+                },
+                settlement: SettlementProps {
+                    conductivity: match w.settlement.conductivity {
+                        None => settlement.conductivity,
+                        Some(conductivity) => conductivity,
+                    },
+                },
+                temperature: TemperaturePropsWall {
+                    internal_temperature,
+                    external_temperature,
+                },
+                wall_area: w.area,
+            });
+        }
+    }
 
     let roof = roof(RoofCalcProps {
         temperature: TemperaturePropsRoof {
@@ -130,9 +187,9 @@ pub async fn calc_request(p: Request) -> CalcResponse {
             equipments: e_calc,
             lighting: l_calc,
             insolation,
-            wall,
+            wall: w_calc,
             roof,
-            total: p_calc + e_calc + l_calc + insolation + wall + roof,
+            total: p_calc + e_calc + l_calc + insolation + w_calc + roof,
         },
     }
 }

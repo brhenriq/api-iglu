@@ -25,7 +25,7 @@ pub async fn list_all() -> Vec<Equipments> {
     }
 }
 
-pub async fn list_by_id(id: &String) -> Vec<Equipments> {
+pub async fn list_by_id(id: &String) -> Equipments {
     let query = sqlx::query_as!(
         Equipments,
         "
@@ -34,17 +34,16 @@ pub async fn list_by_id(id: &String) -> Vec<Equipments> {
             e.description, 
             e.power  
           FROM public.equipments e
-          WHERE id = $1
-          LIMIT 1;
+          WHERE id = $1;
         ",
         id.clone()
     );
 
-    match query.fetch_all(crate::database::DATABASE.get().await).await {
+    match query.fetch_one(crate::database::DATABASE.get().await).await {
         Err(_e) => {
             error!("Error on list {:?}", _e);
 
-            [Equipments::default()].to_vec()
+            Equipments::default()
         }
         Ok(response) => response,
     }
