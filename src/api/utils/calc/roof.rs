@@ -19,7 +19,7 @@ pub struct RoofCalcProps {
     pub tile: TilesProps,
 }
 
-pub fn roof(props: RoofCalcProps) -> f64 {
+pub fn roof_calc(props: RoofCalcProps) -> f64 {
     let tile = props.tile;
     let lining = props.lining;
     let temperature = props.temperature;
