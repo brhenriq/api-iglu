@@ -6,10 +6,11 @@ use crate::api::{
     shared::{
         blocks::use_case::list_block_by_id, equipments::use_case::list_by_id,
         materials::use_case::list_material_by_id, roofs::use_case::list_roof_by_id,
+        solar_factor::use_case::list_solar_factor_by_id,
     },
     utils::calc::{
         equipment::equipments_calc,
-        insolation::insolation,
+        insolation::insolation_calc,
         lighting::lighting_calc,
         peoples::peoples_calc,
         roof::{roof_calc, LiningProps, RoofCalcProps, TemperaturePropsRoof, TilesProps},
@@ -72,6 +73,12 @@ pub struct RoofRequest {
 }
 
 #[derive(Deserialize, Serialize)]
+pub struct InsolationRequest {
+    solar_factor_id: String,
+    area: f64,
+}
+
+#[derive(Deserialize, Serialize)]
 pub struct Request {
     peoples: Option<Vec<PeoplesRequest>>,
     equipments: Option<Vec<EquipmentsRequest>>,
@@ -79,6 +86,7 @@ pub struct Request {
     wall: Option<Vec<WallRequest>>,
     roof: Option<RoofRequest>,
     temperature: Option<TemperatureRequest>,
+    glass: Option<InsolationRequest>,
 }
 
 pub async fn calc_request(props: Request) -> CalcResponse {
@@ -89,6 +97,7 @@ pub async fn calc_request(props: Request) -> CalcResponse {
         wall,
         temperature,
         roof,
+        glass,
     } = props;
 
     let (internal_temperature, external_temperature) = match temperature {
@@ -101,6 +110,7 @@ pub async fn calc_request(props: Request) -> CalcResponse {
     let mut lighting_result = 0.00;
     let mut walls_result = 0.00;
     let mut roof_result = 0.00;
+    let mut insolation_result = 0.00;
 
     match peoples {
         None => {
@@ -135,7 +145,16 @@ pub async fn calc_request(props: Request) -> CalcResponse {
         }
     }
 
-    let insolation = insolation(1.0, 1.0);
+    match glass {
+        None => {
+            warn!("Insolation not sended");
+        }
+        Some(_glass) => {
+            let solar_factor = list_solar_factor_by_id(&_glass.solar_factor_id).await;
+
+            insolation_result += insolation_calc(solar_factor.value as f64, _glass.area);
+        }
+    }
 
     match wall {
         None => {
@@ -208,13 +227,13 @@ pub async fn calc_request(props: Request) -> CalcResponse {
             peoples: peoples_result,
             equipments: equipments_result,
             lighting: lighting_result,
-            insolation,
+            insolation: insolation_result,
             wall: walls_result,
             roof: roof_result,
             total: peoples_result
                 + equipments_result
                 + lighting_result
-                + insolation
+                + insolation_result
                 + walls_result
                 + roof_result,
         },

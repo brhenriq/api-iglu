@@ -24,3 +24,28 @@ pub async fn list_all() -> Vec<SolarFactor> {
         Ok(response) => response,
     }
 }
+
+pub async fn list_solar_factor_by_id(id: &String) -> SolarFactor {
+    let query = sqlx::query_as!(
+        SolarFactor,
+        "
+          SELECT 
+            id, 
+            latitude, 
+            orientation, 
+            value 
+          FROM public.solar_factor
+          WHERE id = $1;
+        ",
+        id.clone()
+    );
+
+    match query.fetch_one(crate::database::DATABASE.get().await).await {
+        Err(_e) => {
+            error!("Error on list {:?}", _e);
+
+            SolarFactor::default()
+        }
+        Ok(response) => response,
+    }
+}
